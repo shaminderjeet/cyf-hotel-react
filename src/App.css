@@ -55,3 +55,12 @@ tr {
 .card {
   width: 18rem;
 }
+.hotel-image {
+  width: 300px;
+  height: 200px;
+  margin-top: 2px;
+}
+.card-img-top {
+  width: 300px;
+  height: 200px;
+}
