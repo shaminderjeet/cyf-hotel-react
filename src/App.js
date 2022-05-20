@@ -4,11 +4,13 @@ import Bookings from "./components/Bookings";
 import "./App.css";
 import TouristInfoCards from "./components/TouristInfoCards";
 import Footer from "./components/Footer";
+import Restaurant from "./components/Restaurant";
 
 const App = () => {
   return (
     <div className="App">
       <Bookings />
+      <Restaurant />
       <Heading />
       <TouristInfoCards />
       <Footer
