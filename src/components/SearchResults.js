@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import fakeBookings from "../data/fakeBookings.json";
 import moment from "moment";
 const SearchResults = props => {
@@ -17,25 +17,36 @@ const SearchResults = props => {
         </tr>
       </thead>
       <tbody>
-        {props.results.map(booking => {
-          let checkInDate = moment(booking.checkInDate);
-          let checkOutDate = moment(booking.checkOutDate);
-          return (
-            <tr>
-              <td>{booking.id}</td>
-
-              <td>{booking.firstName}</td>
-              <td>{booking.surname}</td>
-              <td>{booking.email}</td>
-              <td>{booking.roomId}</td>
-              <td>{booking.checkInDate}</td>
-              <td>{booking.checkOutDate}</td>
-              <td> {checkOutDate.diff(checkInDate, "days")}</td>
-            </tr>
-          );
+        {props.results.map(result => {
+          return <SearchResult booking={result} />;
         })}
       </tbody>
     </table>
   );
 };
+const SearchResult = ({ booking }) => {
+  let checkInDate = moment(booking.checkInDate);
+  let checkOutDate = moment(booking.checkOutDate);
+  const [selected, setSelected] = useState(false);
+  const handleClick = () => {
+    if (selected == true) {
+      setSelected(false);
+    } else {
+      setSelected(true);
+    }
+  };
+  return (
+    <tr className={selected ? "select" : ""} onClick={handleClick}>
+      <td>{booking.id}</td>
+      <td>{booking.firstName}</td>
+      <td>{booking.surname}</td>
+      <td>{booking.email}</td>
+      <td>{booking.roomId}</td>
+      <td>{booking.checkInDate}</td>
+      <td>{booking.checkOutDate}</td>
+      <td> {checkOutDate.diff(checkInDate, "days")}</td>
+    </tr>
+  );
+};
+
 export default SearchResults;
