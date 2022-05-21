@@ -28,12 +28,15 @@ const SearchResult = ({ booking }) => {
   let checkInDate = moment(booking.checkInDate);
   let checkOutDate = moment(booking.checkOutDate);
   const [selected, setSelected] = useState(false);
-  const handleClick = () => {
+  /*const handleClick = () => {
     if (selected == true) {
       setSelected(false);
     } else {
       setSelected(true);
     }
+  };*/
+  const handleClick = () => {
+    setSelected(!selected);
   };
   return (
     <tr className={selected ? "select" : ""} onClick={handleClick}>
