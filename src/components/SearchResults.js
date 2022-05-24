@@ -1,55 +1,78 @@
 import React, { useState } from "react";
-import fakeBookings from "../data/fakeBookings.json";
 import moment from "moment";
-const SearchResults = props => {
-  return (
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col">First_Name</th>
-          <th scope="col">surName</th>
-          <th scope="col">Email</th>
-          <th scope="col">room id</th>
-          <th scope="col">check in date</th>
-          <th scope="col">check out date</th>
-          <th scope="col">number of nights</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.results.map(result => {
-          return <SearchResult booking={result} />;
-        })}
-      </tbody>
-    </table>
-  );
-};
-const SearchResult = ({ booking }) => {
-  let checkInDate = moment(booking.checkInDate);
-  let checkOutDate = moment(booking.checkOutDate);
-  const [selected, setSelected] = useState(false);
-  /*const handleClick = () => {
-    if (selected == true) {
-      setSelected(false);
-    } else {
-      setSelected(true);
-    }
-  };*/
-  const handleClick = () => {
-    setSelected(!selected);
-  };
-  return (
-    <tr className={selected ? "select" : ""} onClick={handleClick}>
-      <td>{booking.id}</td>
-      <td>{booking.firstName}</td>
-      <td>{booking.surname}</td>
-      <td>{booking.email}</td>
-      <td>{booking.roomId}</td>
-      <td>{booking.checkInDate}</td>
-      <td>{booking.checkOutDate}</td>
-      <td> {checkOutDate.diff(checkInDate, "days")}</td>
-    </tr>
-  );
+import SearchButton from "./SearchButton";
+import CustomerProfile from "./CustomerProfile";
+
+const calculateNights = (checkInDate, checkOutDate) => {
+  var a = moment(checkOutDate);
+  var b = moment(checkInDate);
+
+  return <td className="text-center">{a.diff(b, "days")}</td>;
 };
 
+const SearchResults = props => {
+  const [rowIndexClicked, setRowIndexClicked] = useState(null);
+  const [clientId, setClientId] = useState("");
+
+  function handleId(someId) {
+    setClientId(someId);
+  }
+
+  const handlerRowClicked = rowIndex => {
+    if (rowIndexClicked !== rowIndex) {
+      setRowIndexClicked(rowIndex);
+    } else {
+      setRowIndexClicked(null);
+    }
+  };
+
+  return (
+    <div className="table-responsive">
+      <table className="table table-bordered ">
+        <thead className="thead-dark">
+          <tr className="text-center">
+            {Object.keys(props.results[0]).map((elem, index) => (
+              <th className="text-center" scope="col" key={index}>
+                {elem}
+              </th>
+            ))}
+            <th scope="col">Number of Nights</th>
+            <th scope="col">Buttons</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Map trough array of objects  */}
+          {props.results.map((item, index) => {
+            //console.log(item);
+            return (
+              <React.Fragment key={index}>
+                <tr
+                  id={index}
+                  className={rowIndexClicked === index ? "highlighted" : ""}
+                  onClick={() => handlerRowClicked(index)}
+                >
+                  {/* Map through values of each property in array of objects  */}
+                  {Object.values(item).map((val, index) => (
+                    <td className="text-center" key={index}>
+                      {val}
+                    </td>
+                  ))}
+
+                  {calculateNights(item.checkInDate, item.checkOutDate)}
+                  <td>
+                    <SearchButton
+                      onClick={() => handleId(item.id)}
+                      buttonText="Show profile"
+                    />
+                  </td>
+                </tr>
+              </React.Fragment>
+            );
+          })}
+        </tbody>
+      </table>
+      <CustomerProfile id={clientId} />
+    </div>
+  );
+};
 export default SearchResults;
