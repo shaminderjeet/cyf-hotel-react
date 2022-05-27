@@ -4,7 +4,7 @@ import Search from "./Search.js";
 import SearchResults from "./SearchResults";
 
 const Bookings = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState(null);
 
   useEffect(() => {
     fetch("https://cyf-react.glitch.me")
@@ -37,8 +37,12 @@ const Bookings = () => {
       <div className="container">
         <Search search={search} />
 
-        {bookings.length > 0 ? (
-          <SearchResults results={bookings} />
+        {bookings !== null ? (
+          bookings.length == 0 ? (
+            <h3 className="loading-data-h1">No Data.....</h3>
+          ) : (
+            <SearchResults results={bookings} />
+          )
         ) : (
           <h3 className="loading-data-h1">LOADING DATA.....</h3>
         )}

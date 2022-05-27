@@ -35,7 +35,7 @@ const Search = props => {
                 className="form-control"
                 placeholder="Customer name"
               />
-              <SearchButton />
+              <SearchButton buttonText="Search" />
             </div>
           </form>
         </div>
