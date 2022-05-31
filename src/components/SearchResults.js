@@ -14,17 +14,13 @@ const SearchResults = props => {
   const [rowIndexClicked, setRowIndexClicked] = useState(null);
   const [clientId, setClientId] = useState("");
 
+  function handleCustomerClick(index) {
+    setRowIndexClicked(index);
+    console.log(index);
+  }
   function handleId(someId) {
     setClientId(someId);
   }
-
-  const handlerRowClicked = rowIndex => {
-    if (rowIndexClicked !== rowIndex) {
-      setRowIndexClicked(rowIndex);
-    } else {
-      setRowIndexClicked(null);
-    }
-  };
 
   return (
     <div className="table-responsive">
@@ -48,8 +44,8 @@ const SearchResults = props => {
               <React.Fragment key={index}>
                 <tr
                   id={index}
-                  className={rowIndexClicked === index ? "highlighted" : ""}
-                  onClick={() => handlerRowClicked(index)}
+                  className={rowIndexClicked === index ? "selected" : ""}
+                  onClick={() => handleCustomerClick(index)}
                 >
                   {/* Map through values of each property in array of objects  */}
                   {Object.values(item).map((val, index) => (
